@@ -73,7 +73,8 @@ export async function generateJD(data: {
   }
   console.log("Usuário encontrado no banco. Chamando IA...");
 
-  // Importar dinamicamente para evitar erro se a lib não foi carregada no build
+  try {
+    // Importar dinamicamente para evitar erro se a lib não foi carregada no build
     const { generateJobDescription } = await import("@/lib/ai");
     const jd = await generateJobDescription(data);
     console.log("Descrição gerada com sucesso pela IA.");
