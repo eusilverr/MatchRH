@@ -7,7 +7,7 @@ export async function GET() {
 
   try {
     // Tenta listar os modelos disponíveis para esta chave
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`);
     const data = await response.json();
 
     return NextResponse.json({
