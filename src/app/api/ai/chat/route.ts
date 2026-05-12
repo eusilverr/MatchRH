@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     console.log("Chat IA: Contexto recuperado.");
 
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-pro",      systemInstruction: `Você é a MatchRH, uma assistente virtual especializada em RH integrada ao sistema da empresa.
+      model: "gemini-2.5-flash",      systemInstruction: `Você é a MatchRH, uma assistente virtual especializada em RH integrada ao sistema da empresa.
 Você deve ajudar os usuários a extrair insights da plataforma e entender melhor os processos de recrutamento.
 Aqui está o contexto atual (em tempo real) dos dados da empresa nesta plataforma:
 - Total de Vagas Cadastradas: ${totalVagas}

@@ -14,7 +14,7 @@ export async function generateJobDescription(input: {
     throw new Error("GEMINI_API_KEY não configurada.");
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
 Você é um especialista em RH e atração de talentos.
@@ -60,7 +60,7 @@ export async function calculateMatchScore(
     };
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
 Você é um sistema avançado de People Analytics.
