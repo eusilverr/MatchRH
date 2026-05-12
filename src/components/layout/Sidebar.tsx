@@ -74,10 +74,17 @@ export function Sidebar() {
           );
         })}
       </nav>
-
+        
       {/* Footer */}
-      <div className="border-t border-zinc-800 px-3 py-4">
-        <div className="mb-3 rounded-xl bg-zinc-800/50 p-4">
+      <div className="border-t border-zinc-800 px-3 py-4 space-y-2">
+        <SignOutButton>
+          <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-white">
+            <LogOut className="h-[18px] w-[18px] text-zinc-500 group-hover:text-zinc-300" />
+            Sair
+          </button>
+        </SignOutButton>
+
+        <div className="rounded-xl bg-zinc-800/50 p-4">
           <p className="text-xs font-semibold text-white">Plano Gratuito</p>
           <p className="mt-1 text-[11px] text-zinc-500">
             3 de 5 vagas utilizadas
@@ -92,13 +99,6 @@ export function Sidebar() {
             Fazer Upgrade
           </button>
         </div>
-
-        <SignOutButton>
-          <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-white">
-            <LogOut className="h-[18px] w-[18px]" />
-            Sair
-          </button>
-        </SignOutButton>
       </div>
     </aside>
   );
