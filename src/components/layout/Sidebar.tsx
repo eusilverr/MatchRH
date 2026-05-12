@@ -15,6 +15,7 @@ import {
   BarChart,
   Bot
 } from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -92,10 +93,12 @@ export function Sidebar() {
           </button>
         </div>
 
-        <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-white">
-          <LogOut className="h-[18px] w-[18px]" />
-          Sair
-        </button>
+        <SignOutButton>
+          <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-white">
+            <LogOut className="h-[18px] w-[18px]" />
+            Sair
+          </button>
+        </SignOutButton>
       </div>
     </aside>
   );
