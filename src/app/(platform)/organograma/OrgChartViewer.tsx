@@ -199,7 +199,6 @@ export default function OrgChartViewer({
             >
               <Controls
                 className="!bg-zinc-900 !border-zinc-800 !rounded-lg !shadow-xl"
-                style={{ button: { borderColor: "#27272a" } }}
               />
               <Background
                 variant={BackgroundVariant.Dots}
