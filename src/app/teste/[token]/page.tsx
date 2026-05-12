@@ -11,7 +11,6 @@ export default async function TestPage({ params }: { params: Promise<{ token: st
     where: { token },
     include: {
       company: true,
-      candidate: true,
     },
   });
 
