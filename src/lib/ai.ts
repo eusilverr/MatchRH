@@ -36,10 +36,12 @@ A descrição deve conter:
 Formato: Apenas texto, sem formatação complexa de markdown (pode usar bullet points normais como "•"), não adicione introdução ou conclusão. Seja direto e profissional, usando tom convidativo.
   `;
 
+  console.log("Chamando Gemini API para JD...");
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
+    console.log("Resposta da Gemini API recebida (tamanho):", text.length);
     return text.trim();
   } catch (error) {
     console.error("Erro ao gerar JD com Gemini:", error);

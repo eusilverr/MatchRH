@@ -58,19 +58,28 @@ export async function generateJD(data: {
   localizacao: string;
   tipo: string;
 }) {
+  console.log("Iniciando generateJD para:", data.titulo);
   const { userId } = await auth();
   const finalUserId = userId || "user_dev_test_stable";
+  console.log("Usuário autenticado:", finalUserId);
 
   const user = await prisma.user.findUnique({
     where: { clerk_id: finalUserId },
   });
 
   if (!user) {
-    throw new Error("Não autorizado.");
+    console.error("ERRO: Usuário não encontrado no banco de dados para o ID:", finalUserId);
+    throw new Error("Não autorizado. Por favor, complete seu perfil.");
   }
+  console.log("Usuário encontrado no banco. Chamando IA...");
 
   // Importar dinamicamente para evitar erro se a lib não foi carregada no build
-  const { generateJobDescription } = await import("@/lib/ai");
-  const jd = await generateJobDescription(data);
-  return { text: jd };
+    const { generateJobDescription } = await import("@/lib/ai");
+    const jd = await generateJobDescription(data);
+    console.log("Descrição gerada com sucesso pela IA.");
+    return { text: jd };
+  } catch (error: any) {
+    console.error("ERRO CRÍTICO NA AÇÃO generateJD:", error);
+    throw new Error(error.message || "Falha ao gerar descrição com IA.");
+  }
 }
