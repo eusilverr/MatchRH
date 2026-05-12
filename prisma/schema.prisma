@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id               String   @id @default(uuid())
+  razao_social     String
+  cnpj             String   @unique
+  endereco_json    Json?
+  logo_url         String?
+  contexto_empresa String?  @db.Text
+  perfil_ritmo     String?  @db.Text
+  valores          String?  @db.Text
+  created_at       DateTime @default(now())
+
+  users               User[]
+  organograma_nodes   OrganogramaNode[]
+  personality_results PersonalityResult[]
+  jobs                Job[]
+  candidates          Candidate[]
+  chat_messages       ChatMessage[]
+  test_links          TestLink[]
+
+  @@map("companies")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  clerk_id   String   @unique
+  company_id String
+  nome       String
+  email      String   @unique
+  role       String   // admin, recruiter, viewer
+  created_at DateTime @default(now())
+
+  company Company @relation(fields: [company_id], references: [id])
+
+  @@map("users")
+}
+
+model OrganogramaNode {
+  id           String   @id @default(uuid())
+  company_id   String
+  nome         String
+  cargo        String
+  departamento String?
+  parent_id    String?
+  email        String?
+  user_id      String?
+
+  company Company @relation(fields: [company_id], references: [id])
+  parent  OrganogramaNode?  @relation("ParentChild", fields: [parent_id], references: [id])
+  children OrganogramaNode[] @relation("ParentChild")
+  jobs    Job[] @relation("JobLider")
+
+  @@map("organograma_nodes")
+}
+
+model PersonalityResult {
+  id             String   @id @default(uuid())
+  company_id     String
+  subject_id     String
+  subject_type   String   // employee, candidate
+  disc_json      Json?
+  enneagram_json Json?
+  mbti_json      Json?
+  created_at     DateTime @default(now())
+
+  company Company @relation(fields: [company_id], references: [id])
+
+  @@map("personality_results")
+}
+
+model Job {
+  id                String   @id @default(uuid())
+  company_id        String
+  titulo            String
+  lider_id          String?
+  motivo            String?
+  descricao         String?  @db.Text
+  responsabilidades String?  @db.Text
+  metas             String?  @db.Text
+  jd_gerada         String?  @db.Text
+  salary_min        Float?
+  salary_max        Float?
+  perfil_ideal_json Json?
+  status            String   @default("OPEN") // OPEN, CLOSED, DRAFT
+  created_at        DateTime @default(now())
+
+  company       Company @relation(fields: [company_id], references: [id])
+  lider         OrganogramaNode? @relation("JobLider", fields: [lider_id], references: [id])
+  candidates    Candidate[]
+  match_reports MatchReport[]
+  chat_messages ChatMessage[]
+
+  @@map("jobs")
+}
+
+model Candidate {
+  id                String    @id @default(uuid())
+  job_id            String?
+  company_id        String
+  nome              String
+  email             String
+  linkedin_url      String?
+  cv_url            String?
+  respostas_json    Json?
+  entrevista_texto  String?   @db.Text
+  test_link_token   String?
+  test_completed_at DateTime?
+
+  job     Job?     @relation(fields: [job_id], references: [id])
+  company Company @relation(fields: [company_id], references: [id])
+  match_reports MatchReport[]
+
+  @@map("candidates")
+}
+
+model MatchReport {
+  id               String   @id @default(uuid())
+  job_id           String
+  candidate_id     String
+  ranking_position Int?
+  match_score      Float?
+  relatorio_json   Json?
+  created_at       DateTime @default(now())
+
+  job       Job       @relation(fields: [job_id], references: [id])
+  candidate Candidate @relation(fields: [candidate_id], references: [id])
+
+  @@map("match_reports")
+}
+
+model ChatMessage {
+  id         String   @id @default(uuid())
+  company_id String
+  job_id     String?
+  role       String   // user, assistant
+  content    String   @db.Text
+  created_at DateTime @default(now())
+
+  company Company @relation(fields: [company_id], references: [id])
+  job     Job?    @relation(fields: [job_id], references: [id])
+
+  @@map("chat_messages")
+}
+
+model TestLink {
+  id           String    @id @default(uuid())
+  company_id   String
+  token        String    @unique
+  candidate_id String?
+  expires_at   DateTime?
+  completed_at DateTime?
+  type         String    // candidate, employee
+
+  company Company @relation(fields: [company_id], references: [id])
+
+  @@map("test_links")
+}
